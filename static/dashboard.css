@@ -1,0 +1,45 @@
+/* Design and Colors */
+
+body {
+  background-color: #E8EFEF;
+  font-family: 'Veranda', sans-serif;
+  font-size: 16px;
+
+}
+
+div.body {
+  border: 1px solid #697983;
+  border-width: 0 1px;
+  background-color: #ffffff;
+  padding: 2em;
+  color: #111;
+  line-height: 1.4em;
+}
+
+div {
+    /* display:inline; */
+}
+
+div.column_1, div.column_2, div.column_3 {
+  float: left;
+  width: 28%;
+  padding: 1%;
+  margin-right: 1%;
+  margin-left: 1%;
+  border: 1px solid gray;
+}
+
+div.item {
+  height: 15em;
+}
+
+div.item img {
+  float: right;
+}
+
+
+h1 {
+    margin-top:0;
+    color: orange;
+    text-align:right;
+}

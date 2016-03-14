@@ -1,0 +1,1 @@
+An error occured, no connection to CNC4.
