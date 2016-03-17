@@ -26,16 +26,25 @@
     <div class="column_1 item">
         <h1>State</h1>
         <div id="light">
-            %if color == 'LightRed':
+            %if color == 'Red':
                 <img src="static/red.png" alt="Red state" height="20%">
             %elif color == 'LightYellow':
                 <img src="static/yellow.png" alt="Yellow state" height="20%">
+            %elif color == 'Orange':
+                <img src="static/orange.png" alt="Orange state" height="20%">
             %elif color == 'LightGreen':
                 <img src="static/green.png" alt="Green state" height="20%">
             %end
         </div>
         <div id="state">
             {{state}}
+        </div>
+        <div id="locked">
+            %if locked:
+                <img src="static/lock_locked.png" alt="Locked lock" height="20%">
+            %else:
+                <img src="static/lock_unlocked.png" alt="Lock unlocked" height="20%">
+            %end
         </div>
     </div>
     <div class="column_2 item" id="coordinates">
@@ -54,7 +63,7 @@
 
     <div class="column_3 item" id="activity">
         <h1>Completion</h1>
-%if state != 'Idle':
+%if state != 'Idle' and msg != '':
         <div>
             <div id="eta">
                 Time: {{ETA}} to completion (of {{total_minutes}})

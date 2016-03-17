@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from bottle import route, run, template, static_file
+from bottle import route, run, template, static_file, redirect
 import json, requests
 import re
 import logging
@@ -16,6 +16,9 @@ url = 'http://cnc4:8080/state'
 
 
 
+@route('/')
+def root():
+    redirect('/dashboard')
 
 @route('/hello/<name>')
 def index(name):
@@ -50,20 +53,27 @@ def index():
         pass
 
     if data != None:
-        #print(data)
+        print(data)
         #{'wz': 0.0, 'msg': 'Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]',
         # 'color': 'LightYellow', 'wx': 0.0, 'wy': 0.0,
         # 'G': ['G0', 'G54', 'G17', 'G21', 'G90', 'G94', 'M0', 'M5', 'M9', 'T0', 'F0.', 'S0.'],
         # 'state': 'Idle'}
         #print(data['msg'])
-        split_result = re.match('Current:\s(?P<current_line>[0-9]*)\s\[(?P<total_lines>[0-9]*)\].*\s(?P<percentage>[0-9]*)%\s\[(?P<current_minutes>[0-9ms]*)\sTot:\s(?P<total_minutes>[0-9ms]*)\s\]',
+        data['locked'] = False
+        if data['msg'] != '':
+            split_result = re.match('Current:\s(?P<current_line>[0-9]*)\s\[(?P<total_lines>[0-9]*)\].*\s(?P<percentage>[0-9]*)%\s\[(?P<current_minutes>[0-9ms]*)\sTot:\s(?P<total_minutes>[0-9ms]*)\s\]',
                  data['msg'])
-        data['current_line'] = split_result.group('current_line')
-        data['total_lines'] = split_result.group('total_lines')
-        data['percentage'] = split_result.group('percentage')
-        data['current_minutes'] = split_result.group('current_minutes')
-        data['total_minutes'] = split_result.group('total_minutes')
-        data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
+            data['current_line'] = split_result.group('current_line')
+            data['total_lines'] = split_result.group('total_lines')
+            data['percentage'] = split_result.group('percentage')
+            data['current_minutes'] = split_result.group('current_minutes')
+            data['total_minutes'] = split_result.group('total_minutes')
+            data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
+        locked_strings = ['Reset to continue', "'$H'|'$X' to unlock"]
+
+        if ' '.join(data['G']) in locked_strings:
+
+            data['locked'] = True
         return template('results', **data)
     else:
         #logger.info('No connection to cnc4')
