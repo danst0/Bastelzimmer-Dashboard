@@ -78,6 +78,6 @@
     </div>
 
 </div>
-
-
+<hr>
+<a href="http://cnc4:8080/">Pendant</a>
 </html>

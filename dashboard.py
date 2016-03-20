@@ -80,7 +80,8 @@ def index():
         return template('error')
 
 
-run(host='localhost', port=8080, reloader=True)
+run(host='0.0.0.0', port=8081, reloader=True)
 
 #http://cnc4:8080/state
 # {"G": ["G0", "G54", "G17", "G21", "G90", "G94", "M0", "M5", "M9", "T0", "F0.", "S0."], "color": "LightYellow", "state": "Idle", "msg": "Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]", "wz": 0.0, "wy": 0.0, "wx": 0.0}
+# <iframe src="http://cnc4:8080/" width="98%" height="100%" style="border:none"></iframe>
