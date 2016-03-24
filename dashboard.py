@@ -54,7 +54,7 @@ def index():
         pass
 
 
-    lines = ser.readlines(timeout=1)
+    lines = ser.readlines(1)
     print(lines)
 
 
