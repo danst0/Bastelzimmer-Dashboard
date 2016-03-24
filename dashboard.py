@@ -4,6 +4,7 @@ from bottle import route, run, template, static_file, redirect
 import json, requests
 import re
 import logging
+import serial, sys
 logger = logging.getLogger()
 handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
@@ -52,6 +53,11 @@ def index():
         logger.error('No connection to cnc4')
         pass
 
+
+    lines = ser.readlines(timeout=1)
+    print(lines)
+
+
     if data != None:
         print(data)
         #{'wz': 0.0, 'msg': 'Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]',
@@ -80,6 +86,7 @@ def index():
         return template('error')
 
 
+ser = serial.Serial('/dev/ttyUSB1', 57600)
 run(host='0.0.0.0', port=8081, reloader=True)
 
 #http://cnc4:8080/state
