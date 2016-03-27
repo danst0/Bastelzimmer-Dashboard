@@ -102,6 +102,8 @@ def read_serial():
         lines = ser.readlines(1)
     except serial.serialutil.SerialException as e:
         pass
+    except BlockingIOError as eb:
+        print('Serial blocked')
 
     if len(lines) > 0:
         sanitized_line = lines[0].decode('ascii')
