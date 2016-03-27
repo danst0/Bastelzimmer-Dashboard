@@ -6,8 +6,7 @@ import re
 import logging
 import serial, sys
 from threading import Timer
-import signal
-import sys
+
 
 
 
@@ -90,23 +89,17 @@ def index():
         return template('error')
 
 def read_serial():
-    lines = ser.readlines(10)
+    lines = None
+    try:
+        lines = ser.readlines(10)
+    except serial.serialutil.SerialException as e:
+        pass
+
     print(lines)
-    print('hello')
+
     TIMER_OBJ = Timer(1.0, read_serial)
     TIMER_OBJ.start()
 
-
-def signal_handler(signal, frame):
-        print('You pressed Ctrl+C!')
-        TIMER_OBJ.cancel()
-        sys.exit(0)
-
-
-
-signal.signal(signal.SIGINT, signal_handler)
-print('Press Ctrl+C')
-signal.pause()
 
 try:
     ser = serial.Serial('/dev/ttyUSB1', 57600)
@@ -117,6 +110,9 @@ else:
 
 
 run(host='0.0.0.0', port=8081, reloader=True)
+TIMER_OBJ.cancel()
+print('Timer canceled')
+
 
 #http://cnc4:8080/state
 # {"G": ["G0", "G54", "G17", "G21", "G90", "G94", "M0", "M5", "M9", "T0", "F0.", "S0."], "color": "LightYellow", "state": "Idle", "msg": "Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]", "wz": 0.0, "wy": 0.0, "wx": 0.0}
