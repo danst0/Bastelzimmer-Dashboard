@@ -93,7 +93,12 @@ def read_serial():
     lines = ser.readlines(1)
     sanitized_line = lines[0].decode('ascii')
     if sanitized_line.startswith('OK'):
-        print(sanitized_line)
+        output = sanitized_line.split(' ')
+        print('Result', output[0])
+        print('Moved', output[1])
+        print('Light', output[2])
+        print('Humidity', output[3])
+        print('Temp', output[4]/10.0)
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
@@ -103,7 +108,7 @@ def read_serial():
 
 
 try:
-    ser = serial.Serial('/dev/ttyUSB1', 57600)
+    ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
 except:
     ser = None
 else:
