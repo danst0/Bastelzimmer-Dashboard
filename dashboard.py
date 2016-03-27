@@ -6,6 +6,10 @@ import re
 import logging
 import serial, sys
 from threading import Timer
+import signal
+import sys
+
+
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
@@ -17,7 +21,7 @@ logger.setLevel(logging.WARN)
 
 url = 'http://cnc4:8080/state'
 
-
+TIMER_OBJ = None
 
 @route('/')
 def root():
@@ -89,10 +93,20 @@ def read_serial():
     lines = ser.readlines(10)
     print(lines)
     print('hello')
-    t = Timer(1.0, read_serial)
-    t.start()
+    TIMER_OBJ = Timer(1.0, read_serial)
+    TIMER_OBJ.start()
 
 
+def signal_handler(signal, frame):
+        print('You pressed Ctrl+C!')
+        TIMER_OBJ.cancel()
+        sys.exit(0)
+
+
+
+signal.signal(signal.SIGINT, signal_handler)
+print('Press Ctrl+C')
+signal.pause()
 
 try:
     ser = serial.Serial('/dev/ttyUSB1', 57600)
