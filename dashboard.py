@@ -95,7 +95,12 @@ def index():
         return template('error')
 
 def read_serial():
-    lines = ser.readlines(1)
+    lines = []
+    try:
+        lines = ser.readlines(1)
+    except serial.serialutil.SerialException as e:
+        pass
+
     if len(lines) > 0:
         sanitized_line = lines[0].decode('ascii')
         if sanitized_line.startswith('OK'):
