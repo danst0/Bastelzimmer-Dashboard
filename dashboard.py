@@ -89,6 +89,8 @@ def read_serial():
     lines = ser.readlines(1)
     print(lines)
     print('hello')
+    t = Timer(1.0, read_serial)
+    t.start()
 
 
 
@@ -97,9 +99,7 @@ try:
 except:
     ser = None
 else:
-
-    t = Timer(1.0, read_serial)
-    t.start() # after 30 seconds, "hello, world" will be printed
+    read_serial()
 
 
 run(host='0.0.0.0', port=8081, reloader=True)
