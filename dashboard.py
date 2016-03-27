@@ -18,7 +18,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.WARN)
 sensor_lock = threading.Lock()
-sensor_output = []
+global sensor_output = []
 
 
 url = 'http://cnc4:8080/state'
