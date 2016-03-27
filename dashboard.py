@@ -86,7 +86,7 @@ def index():
         return template('error')
 
 def read_serial():
-    lines = ser.readlines(1)
+    lines = ser.readlines(10)
     print(lines)
     print('hello')
     t = Timer(1.0, read_serial)
