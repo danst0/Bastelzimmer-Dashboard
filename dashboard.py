@@ -90,8 +90,9 @@ def index():
         return template('error')
 
 def read_serial():
-    lines = ser.readlines(2)
-    print(lines)
+    lines = ser.readlines(1)
+
+    print(lines[0].decode('ascii'))
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
