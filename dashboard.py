@@ -93,7 +93,9 @@ def read_serial():
     lines = []
     while True:
         try:
-            lines.append(ser.readline())
+            line = ser.readline()
+            print(line)
+            lines.append(line)
         except serial.serialutil.SerialException as e:
             break
     if lines:
