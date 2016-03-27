@@ -18,7 +18,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.WARN)
 sensor_lock = threading.Lock()
-global sensor_output = []
+sensor_output = []
 
 
 url = 'http://cnc4:8080/state'
@@ -49,6 +49,7 @@ def get_time_string(seconds):
 
 @route('/dashboard')
 def index():
+    global sensor_output
     data = None
     try:
         resp = requests.get(url=url)
@@ -95,6 +96,7 @@ def index():
         return template('error')
 
 def read_serial():
+    global sensor_output
     lines = []
     try:
         lines = ser.readlines(1)
