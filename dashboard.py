@@ -91,8 +91,9 @@ def index():
 
 def read_serial():
     lines = ser.readlines(1)
-
-    print(lines[0].decode('ascii'))
+    sanitized_line = lines[0].decode('ascii')
+    if sanitized_line.startswith('OK'):
+        print(sanitized_line)
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
