@@ -82,7 +82,7 @@ def index():
             data['total_minutes'] = split_result.group('total_minutes')
             data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
             with sensor_lock:
-                data['sendors'] = sensor_output
+                data['sensors'] = sensor_output
         locked_strings = ['Reset to continue', "'$H'|'$X' to unlock"]
 
         if ' '.join(data['G']) in locked_strings:
