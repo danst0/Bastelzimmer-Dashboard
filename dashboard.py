@@ -91,6 +91,7 @@ def index():
 
 def read_serial():
     lines = ser.readlines(1)
+    print(lines)
     sanitized_line = lines[0].decode('ascii')
     if sanitized_line.startswith('OK'):
         output = sanitized_line.split(' ')
