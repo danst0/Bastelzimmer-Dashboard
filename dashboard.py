@@ -5,7 +5,7 @@ import json, requests
 import re
 import logging
 import serial, sys
-from threading import Timer
+from threading import threading, Timer
 
 
 
@@ -20,7 +20,7 @@ logger.setLevel(logging.WARN)
 
 url = 'http://cnc4:8080/state'
 
-TIMER_OBJ = None
+cancel_timer = threading.Event()
 
 @route('/')
 def root():
@@ -97,9 +97,11 @@ def read_serial():
             break
     if lines:
         print(lines)
-
-    TIMER_OBJ = Timer(1.0, read_serial)
-    TIMER_OBJ.start()
+    if not cancel_timer.is_set():
+        t = Timer(1.0, read_serial)
+        t.start()
+    else:
+        print('Successfully canceled')
 
 
 try:
@@ -111,8 +113,10 @@ else:
 
 
 run(host='0.0.0.0', port=8081, reloader=True)
-TIMER_OBJ.cancel()
+cancel_timer.set()
 print('Timer canceled')
+Timer.sleep(2)
+print('Exiting')
 
 
 #http://cnc4:8080/state
