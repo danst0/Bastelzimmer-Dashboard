@@ -91,15 +91,15 @@ def index():
 
 def read_serial():
     lines = ser.readlines(1)
-    print(lines)
-    sanitized_line = lines[0].decode('ascii')
-    if sanitized_line.startswith('OK'):
-        output = sanitized_line.split(' ')
-        print('Result', output[0])
-        print('Moved', output[1])
-        print('Light', output[2])
-        print('Humidity', output[3])
-        print('Temp', output[4]/10.0)
+    if len(lines) > 0:
+        sanitized_line = lines[0].decode('ascii')
+        if sanitized_line.startswith('OK'):
+            output = sanitized_line.split(' ')
+            print('Result', output[0])
+            print('Moved', output[1])
+            print('Light', output[2])
+            print('Humidity', output[3])
+            print('Temp', output[4]/10.0)
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
