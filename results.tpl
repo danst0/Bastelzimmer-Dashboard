@@ -46,7 +46,6 @@
                 <img src="static/lock_unlocked.png" alt="Lock unlocked" height="20%">
             %end
         </div>
-        <h1>Coordinates</h1>
         <div id="wx">
             X: {{wx}}
         </div>
@@ -56,13 +55,17 @@
         <div id="wz">
             Z: {{wz}}
         </div>
-
-        <div id="sensors">
-            {{sensors}}
-        </div>
     </div>
     <div class="column_2 item" id="environment">
         <h1>Environment</h1>
+        <div id="light_environment">
+            %if sensors[0] != 'OK':
+                <img src="static/red.png" alt="Red state" height="20%">
+            %else:
+                <img src="static/green.png" alt="Green state" height="20%">
+            %end
+        </div>
+
         <div id="sensors">
             {{sensors}}
         </div>
