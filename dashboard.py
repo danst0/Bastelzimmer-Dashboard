@@ -89,13 +89,14 @@ def index():
         return template('error')
 
 def read_serial():
-    lines = None
-    try:
-        lines = ser.readlines(10)
-    except serial.serialutil.SerialException as e:
-        pass
-
-    print(lines)
+    lines = []
+    while True:
+        try:
+            lines.append(ser.readline())
+        except serial.serialutil.SerialException as e:
+            break
+    if lines:
+        print(lines)
 
     TIMER_OBJ = Timer(1.0, read_serial)
     TIMER_OBJ.start()
