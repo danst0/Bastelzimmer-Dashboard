@@ -5,7 +5,7 @@ import json, requests
 import re
 import logging
 import serial, sys
-import threading
+from threading import Timer
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
