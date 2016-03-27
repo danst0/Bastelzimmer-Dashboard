@@ -99,7 +99,7 @@ def read_serial():
             print('Moved', output[1])
             print('Light', output[2])
             print('Humidity', output[3])
-            print('Temp', output[4]/10.0)
+            print('Temp', int(output[4])/10.0)
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
