@@ -5,7 +5,8 @@ import json, requests
 import re
 import logging
 import serial, sys
-from threading import threading, Timer
+import threading
+import time
 
 
 
@@ -98,7 +99,7 @@ def read_serial():
     if lines:
         print(lines)
     if not cancel_timer.is_set():
-        t = Timer(1.0, read_serial)
+        t = threading.Timer(1.0, read_serial)
         t.start()
     else:
         print('Successfully canceled')
@@ -115,7 +116,7 @@ else:
 run(host='0.0.0.0', port=8081, reloader=True)
 cancel_timer.set()
 print('Timer canceled')
-Timer.sleep(2)
+time.sleep(2)
 print('Exiting')
 
 
