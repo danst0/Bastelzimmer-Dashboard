@@ -83,6 +83,7 @@ def index():
             data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
             with sensor_lock:
                 data['sensors'] = sensor_output
+                print(sensor_output)
         locked_strings = ['Reset to continue', "'$H'|'$X' to unlock"]
 
         if ' '.join(data['G']) in locked_strings:
@@ -100,12 +101,12 @@ def read_serial():
         if sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.split(' ')
-            print('-'*40)
-            print('Result', sensor_output[0])
-            print('Moved', sensor_output[1])
-            print('Light', sensor_output[2])
-            print('Humidity', sensor_output[3])
-            print('Temp', int(sensor_output[4])/10.0)
+            # print('-'*40)
+            # print('Result', sensor_output[0])
+            # print('Moved', sensor_output[1])
+            # print('Light', sensor_output[2])
+            # print('Humidity', sensor_output[3])
+            # print('Temp', int(sensor_output[4])/10.0)
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
