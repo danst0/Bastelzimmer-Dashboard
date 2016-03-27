@@ -5,6 +5,8 @@ import json, requests
 import re
 import logging
 import serial, sys
+import threading
+
 logger = logging.getLogger()
 handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
@@ -54,8 +56,6 @@ def index():
         pass
 
 
-    lines = ser.readlines(1)
-    print(lines)
 
 
     if data != None:
@@ -85,8 +85,23 @@ def index():
         #logger.info('No connection to cnc4')
         return template('error')
 
+def read_serial():
+    lines = ser.readlines(1)
+    print(lines)
+    print('hello')
 
-ser = serial.Serial('/dev/ttyUSB1', 57600)
+
+
+try:
+    ser = serial.Serial('/dev/ttyUSB1', 57600)
+except:
+    ser = None
+else:
+
+    t = Timer(1.0, read_serial)
+    t.start() # after 30 seconds, "hello, world" will be printed
+
+
 run(host='0.0.0.0', port=8081, reloader=True)
 
 #http://cnc4:8080/state
