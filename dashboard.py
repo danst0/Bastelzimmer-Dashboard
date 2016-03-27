@@ -17,6 +17,8 @@ formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.WARN)
+sensor_lock = threading.Lock()
+sensor_output = []
 
 
 url = 'http://cnc4:8080/state'
@@ -79,6 +81,8 @@ def index():
             data['current_minutes'] = split_result.group('current_minutes')
             data['total_minutes'] = split_result.group('total_minutes')
             data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
+            with sensor_lock:
+                data['sendors'] = sensor_output
         locked_strings = ['Reset to continue', "'$H'|'$X' to unlock"]
 
         if ' '.join(data['G']) in locked_strings:
@@ -94,12 +98,14 @@ def read_serial():
     if len(lines) > 0:
         sanitized_line = lines[0].decode('ascii')
         if sanitized_line.startswith('OK'):
-            output = sanitized_line.split(' ')
-            print('Result', output[0])
-            print('Moved', output[1])
-            print('Light', output[2])
-            print('Humidity', output[3])
-            print('Temp', int(output[4])/10.0)
+            with sensor_lock:
+                sensor_output = sanitized_line.split(' ')
+            print('-'*40)
+            print('Result', sensor_output[0])
+            print('Moved', sensor_output[1])
+            print('Light', sensor_output[2])
+            print('Humidity', sensor_output[3])
+            print('Temp', int(sensor_output[4])/10.0)
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
