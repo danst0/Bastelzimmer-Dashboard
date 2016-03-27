@@ -47,7 +47,7 @@
             %end
         </div>
         <div id="sensors">
-            {{sensor_output}}
+            {{sensors}}
         </div>
     </div>
     <div class="column_2 item" id="coordinates">
