@@ -46,6 +46,9 @@
                 <img src="static/lock_unlocked.png" alt="Lock unlocked" height="20%">
             %end
         </div>
+        <div id="sensors">
+            {{sensor_output}}
+        </div>
     </div>
     <div class="column_2 item" id="coordinates">
         <h1>Coordinates</h1>
