@@ -90,15 +90,9 @@ def index():
         return template('error')
 
 def read_serial():
-    lines = []
-    while True:
-        try:
-            lines = ser.readlines(1)
-            print(lines)
-        except serial.serialutil.SerialException as e:
-            break
-    if lines:
-        print(lines)
+    lines = ser.readlines(2)
+    print(lines)
+
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
         t.start()
