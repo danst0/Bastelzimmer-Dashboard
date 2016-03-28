@@ -116,7 +116,7 @@ def read_serial():
 
         if sanitized_line.startswith('OK'):
             with sensor_lock:
-                sensor_output = sanitized_line.split(' ')
+                sensor_output = sanitized_line.strip('\r\n').split(' ')
             logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
 
     if not cancel_timer.is_set():
