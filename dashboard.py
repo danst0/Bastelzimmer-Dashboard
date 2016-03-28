@@ -50,7 +50,7 @@ def get_time_string(seconds):
 @route('/dashboard')
 def index():
     global sensor_output
-    data = None
+    data = {}
     try:
         resp = requests.get(url=url)
         data = json.loads(resp.text)
@@ -64,8 +64,8 @@ def index():
 
 
 
-
-    if data != None:
+    error = True
+    if data != {}:
         logger.info(data)
         #{'wz': 0.0, 'msg': 'Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]',
         # 'color': 'LightYellow', 'wx': 0.0, 'wy': 0.0,
@@ -82,14 +82,18 @@ def index():
             data['current_minutes'] = split_result.group('current_minutes')
             data['total_minutes'] = split_result.group('total_minutes')
             data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
-            with sensor_lock:
-                data['sensors'] = sensor_output
-                print(sensor_output)
+
         locked_strings = ['Reset to continue', "'$H'|'$X' to unlock"]
 
         if ' '.join(data['G']) in locked_strings:
 
             data['locked'] = True
+        error = False
+    with sensor_lock:
+        data['sensors'] = sensor_output
+        print(sensor_output)
+        error = False
+    if not error:
         return template('results', **data)
     else:
         #logger.info('No connection to cnc4')
