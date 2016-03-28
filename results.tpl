@@ -67,7 +67,7 @@
                 <img src="static/green.png" alt="Green state" height="20%">
             %end
         </div>
-        %if len(sensors) = 6:
+        %if len(sensors) == 6:
             <div id="sensors">
                 %if sensors[1] == '1':
                     Movement detected
