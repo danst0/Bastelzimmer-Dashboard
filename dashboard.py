@@ -87,7 +87,7 @@ def index():
         error = False
     with sensor_lock:
         data['sensors'] = sensor_output
-        print(sensor_output)
+        logger.info('Sensor data for Dashboard {0}'.format(sensor_output))
         error = False
     if not error:
         return template('results', **data)
