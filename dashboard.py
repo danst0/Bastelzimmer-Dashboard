@@ -145,14 +145,15 @@ for port in ports:
         jeeUSB_port = port
 logger.info('Selecting port {0}'.format(jeeUSB_port))
 
-ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
-#try:
-#    ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
-#except:
-#    ser = None
-#    logger.error('Serial connection not available')
-#else:
-#    read_serial()
+#ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+try:
+    ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
+except Exception as e:
+    ser = None
+    logger.error('Serial connection not possible')
+    raise e
+else:
+    read_serial()
 
 
 
