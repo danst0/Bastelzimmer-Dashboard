@@ -16,7 +16,7 @@ handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.WARN)
+logger.setLevel(logging.INFO)
 sensor_lock = threading.Lock()
 sensor_output = []
 
@@ -114,12 +114,12 @@ def read_serial():
         if sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.split(' ')
-            # print('-'*40)
-            # print('Result', sensor_output[0])
-            # print('Moved', sensor_output[1])
-            # print('Light', sensor_output[2])
-            # print('Humidity', sensor_output[3])
-            # print('Temp', int(sensor_output[4])/10.0)
+            logger.info('-'*40)
+            logger.info('Result', sensor_output[0])
+            logger.info('Moved', sensor_output[1])
+            logger.info('Light', sensor_output[2])
+            logger.info('Humidity', sensor_output[3])
+            logger.info('Temp', int(sensor_output[4])/10.0)
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
