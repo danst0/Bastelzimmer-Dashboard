@@ -7,6 +7,7 @@ import logging
 import serial, sys
 import threading
 import time
+import serial.tools.list_ports
 
 
 
@@ -138,7 +139,9 @@ try:
     ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
 except:
     ser = None
-    logger.error('Serial connection not possible')
+    logger.error('Serial connection not available')
+    logger.info('Available ports')
+    logger.info(list(serial.tools.list_ports.comports()))
 else:
     read_serial()
 
