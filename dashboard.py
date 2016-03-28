@@ -7,7 +7,7 @@ import logging
 import serial, sys
 import threading
 import time
-import serial.tools.list_ports
+import serial, glob
 
 
 
@@ -134,6 +134,12 @@ def read_serial():
     else:
         logger.info('Timer successfully canceled')
 
+ def scan_serial_ports():
+    # scan for available ports. return a list of device names.
+    return glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
+
+
+
 
 try:
     ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
@@ -141,9 +147,10 @@ except:
     ser = None
     logger.error('Serial connection not available')
     logger.info('Available ports')
-    logger.info(list(serial.tools.list_ports.comports()))
+    logger.info(scan_serial_ports())
 else:
     read_serial()
+
 
 
 run(host='0.0.0.0', port=8081, reloader=True)
