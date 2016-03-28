@@ -117,12 +117,7 @@ def read_serial():
         if sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.split(' ')
-            logger.info('-'*40)
-            logger.info('Result', sensor_output[0])
-            logger.info('Moved', sensor_output[1])
-            logger.info('Light', sensor_output[2])
-            logger.info('Humidity', sensor_output[3])
-            logger.info('Temp', int(sensor_output[4])/10.0)
+            logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(**sensor_output))
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
