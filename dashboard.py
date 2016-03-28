@@ -148,6 +148,7 @@ except Exception as e:
     logger.error('Serial connection not possible')
     raise e
 else:
+    ser.read(10000)
     read_serial()
 
 
