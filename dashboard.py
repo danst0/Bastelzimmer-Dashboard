@@ -66,7 +66,7 @@ def index():
 
 
     if data != None:
-        print(data)
+        logger.info(data)
         #{'wz': 0.0, 'msg': 'Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]',
         # 'color': 'LightYellow', 'wx': 0.0, 'wy': 0.0,
         # 'G': ['G0', 'G54', 'G17', 'G21', 'G90', 'G94', 'M0', 'M5', 'M9', 'T0', 'F0.', 'S0.'],
@@ -103,7 +103,7 @@ def read_serial():
     except serial.serialutil.SerialException as e:
         pass
     except BlockingIOError as eb:
-        print('Serial blocked')
+        logger.warn('Serial blocked')
 
     if len(lines) > 0:
         sanitized_line = lines[0].decode('ascii')
@@ -121,7 +121,7 @@ def read_serial():
         t = threading.Timer(1.0, read_serial)
         t.start()
     else:
-        print('Successfully canceled')
+        logger.info('Timer successfully canceled')
 
 
 try:
@@ -134,9 +134,9 @@ else:
 
 run(host='0.0.0.0', port=8081, reloader=True)
 cancel_timer.set()
-print('Timer canceled')
+#print('Timer canceled')
 time.sleep(2)
-print('Exiting')
+#print('Exiting')
 
 
 #http://cnc4:8080/state
