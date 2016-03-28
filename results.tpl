@@ -70,11 +70,10 @@
         %if len(sensors) == 6:
             <div id="sensors">
                 <div id="movement">
-                %if sensors[1] == '1':
-                    <div id="movement">
+                    %if sensors[1] == '1':
                         Movement detected
-                    </div>
-                %end
+                    %end
+                </div>
                 <div id="light_level">
                     Light level {{sensors[2]}}
                 </div>
