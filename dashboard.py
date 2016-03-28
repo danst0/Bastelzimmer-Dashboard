@@ -67,7 +67,7 @@ def index():
 
     error = True
     if data != {}:
-        logger.info(data)
+        logger.debug(data)
         data['locked'] = False
         if data['msg'] != '':
             split_result = re.match('Current:\s(?P<current_line>[0-9]*)\s\[(?P<total_lines>[0-9]*)\].*\s(?P<percentage>[0-9]*)%\s\[(?P<current_minutes>[0-9ms]*)\sTot:\s(?P<total_minutes>[0-9ms]*)\s\]',
@@ -117,7 +117,7 @@ def read_serial():
         if sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.strip('\r\n').split(' ')
-            logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
+            logger.debug('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
