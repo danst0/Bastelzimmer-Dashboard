@@ -67,10 +67,16 @@
                 <img src="static/green.png" alt="Green state" height="20%">
             %end
         </div>
-
-        <div id="sensors">
-            {{sensors}}
-        </div>
+        %if len(sensors) = 6:
+            <div id="sensors">
+                %if sensors[1] == '1':
+                    Movement detected
+                %end
+                Light level {{sensors[2]}}
+                Humidity {{sensors[3]}}
+                Temperature {{sensors[4]}}
+            </div>
+        %end
 
     </div>
 
