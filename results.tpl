@@ -10,7 +10,7 @@
         $("#state").load(location.href + " #state");
         $("#light").load(location.href + " #light");
         $("#light_environment").load(location.href + " #light_environment");
-        $("#sensors").load(location.href + " #sensors");
+        $("#environment").load(location.href + " #environment");
         $("#wx").load(location.href + " #wx");
         $("#wy").load(location.href + " #wy");
         $("#wz").load(location.href + " #wz");
