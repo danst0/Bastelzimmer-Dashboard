@@ -110,7 +110,10 @@ def read_serial():
         logger.warn('Serial blocked')
 
     if len(lines) > 0:
-        sanitized_line = lines[0].decode('ascii')
+        try:
+            sanitized_line = lines[0].decode('ascii')
+        except:
+            logger.error(lines)
         if sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.split(' ')
@@ -132,6 +135,7 @@ try:
     ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
 except:
     ser = None
+    logger.error('Serial connection not possible')
 else:
     read_serial()
 
