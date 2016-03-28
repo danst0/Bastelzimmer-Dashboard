@@ -111,6 +111,7 @@ def read_serial():
         logger.warn('Serial blocked')
 
     if len(lines) > 0:
+        logger.info(lines)
         sanitized_line = ''
         try:
             sanitized_line = lines[0].decode('ascii')
@@ -140,14 +141,14 @@ def scan_serial_ports():
 
 
 
+logger.info('Available ports')
+logger.info(scan_serial_ports())
 
 try:
     ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
 except:
     ser = None
     logger.error('Serial connection not available')
-    logger.info('Available ports')
-    logger.info(scan_serial_ports())
 else:
     read_serial()
 
