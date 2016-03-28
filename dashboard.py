@@ -134,7 +134,7 @@ def read_serial():
     else:
         logger.info('Timer successfully canceled')
 
- def scan_serial_ports():
+def scan_serial_ports():
     # scan for available ports. return a list of device names.
     return glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
 
