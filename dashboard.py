@@ -60,7 +60,7 @@ def index():
                 'color': 'LightYellow', 'wx': 0.0, 'wy': 0.0,
                 'G': ['G0', 'G54', 'G17', 'G21', 'G90', 'G94', 'M0', 'M5', 'M9', 'T0', 'F0.', 'S0.'],
                 'state': 'Idle'}
-        logger.error('No connection to cnc4')
+        logger.warn('No connection to cnc4')
         pass
 
 
@@ -68,11 +68,6 @@ def index():
     error = True
     if data != {}:
         logger.info(data)
-        #{'wz': 0.0, 'msg': 'Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]',
-        # 'color': 'LightYellow', 'wx': 0.0, 'wy': 0.0,
-        # 'G': ['G0', 'G54', 'G17', 'G21', 'G90', 'G94', 'M0', 'M5', 'M9', 'T0', 'F0.', 'S0.'],
-        # 'state': 'Idle'}
-        #print(data['msg'])
         data['locked'] = False
         if data['msg'] != '':
             split_result = re.match('Current:\s(?P<current_line>[0-9]*)\s\[(?P<total_lines>[0-9]*)\].*\s(?P<percentage>[0-9]*)%\s\[(?P<current_minutes>[0-9ms]*)\sTot:\s(?P<total_minutes>[0-9ms]*)\s\]',
@@ -142,9 +137,15 @@ def scan_serial_ports():
 
 
 logger.info('Available ports')
-logger.info(scan_serial_ports())
+ports = scan_serial_ports()
+logger.info(ports)
+jeeUSB_port = ''
+for port in ports:
+    if not port.endswith('0'):
+        jeeUSB_port = port
+logger.info('Selecting port {0}'.format(jeeUSB_port))
 
-ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
+ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
 #try:
 #    ser = serial.Serial('/dev/ttyUSB1', 57600, timeout=1)
 #except:
