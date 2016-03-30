@@ -115,7 +115,10 @@ def read_serial():
         if sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.strip('\r\n').split(' ')
-            logger.debug('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
+            if len(sensor_output) >= 5:
+                logger.debug('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
+            else:
+                logger.debug('Raw ' + str(sensor_output))
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
