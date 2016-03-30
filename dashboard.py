@@ -17,7 +17,7 @@ handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.WARN)
+logger.setLevel(logging.INFO)
 sensor_lock = threading.Lock()
 sensor_output = []
 
@@ -56,7 +56,7 @@ def index():
         resp = requests.get(url=url)
         data = json.loads(resp.text)
     except:
-        data = {'wz': 0.0, 'msg': 'Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]',
+        data = {'wz': 0.0, 'msg': 'Current: 0 [0]  Completed: 100% [0m0s Tot: 0m0s ]',
                 'color': 'LightYellow', 'wx': 0.0, 'wy': 0.0,
                 'G': ['G0', 'G54', 'G17', 'G21', 'G90', 'G94', 'M0', 'M5', 'M9', 'T0', 'F0.', 'S0.'],
                 'state': 'No connection to bCNC'}
@@ -65,7 +65,6 @@ def index():
 
 
 
-    error = True
     if data != {}:
         logger.debug(data)
         data['locked'] = False
@@ -84,12 +83,11 @@ def index():
         if ' '.join(data['G']) in locked_strings:
 
             data['locked'] = True
-        error = False
     with sensor_lock:
         data['sensors'] = sensor_output
         logger.info('Sensor data for Dashboard {0}'.format(sensor_output))
-        error = False
-    if not error:
+    if data != {}:
+        logger.info(data)
         return template('results', **data)
     else:
         #logger.info('No connection to cnc4')
