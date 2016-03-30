@@ -59,7 +59,7 @@ def index():
         data = {'wz': 0.0, 'msg': 'Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]',
                 'color': 'LightYellow', 'wx': 0.0, 'wy': 0.0,
                 'G': ['G0', 'G54', 'G17', 'G21', 'G90', 'G94', 'M0', 'M5', 'M9', 'T0', 'F0.', 'S0.'],
-                'state': 'Idle'}
+                'state': 'No connection to bCNC'}
         logger.warn('No connection to cnc4')
         pass
 
