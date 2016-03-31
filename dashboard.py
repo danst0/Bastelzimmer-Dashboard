@@ -149,8 +149,11 @@ except Exception as e:
     ser = None
     logger.error('Serial connection not possible')
     raise e
-else:
-    ser.read(10000)
+if ser:
+    try:
+        ser.read(10000)
+    except:
+        pass
     read_serial()
 
 
