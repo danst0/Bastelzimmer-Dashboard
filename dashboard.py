@@ -100,7 +100,7 @@ def read_serial():
     ser.write(b'h\n')
     lines = []
     try:
-        lines = ser.readlines(1)
+        lines = ser.readlines(10)
     except serial.serialutil.SerialException as e:
         pass
     except BlockingIOError as eb:
