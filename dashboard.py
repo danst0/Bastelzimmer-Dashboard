@@ -150,8 +150,10 @@ except Exception as e:
     logger.error('Serial connection not possible')
     raise e
 if ser:
+    logger.info('Successful connection to serial port')
     try:
         ser.read(10000)
+        logger.info('Flushed cache')
     except:
         pass
     read_serial()
