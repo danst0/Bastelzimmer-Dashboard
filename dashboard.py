@@ -99,7 +99,7 @@ def read_temperature():
     ser.write(b'h\n')
     lines = []
     try:
-        lines = ser.readlines(10)
+        lines = ser.readlines(0)
     except serial.serialutil.SerialException as e:
         pass
     except BlockingIOError as eb:
@@ -135,7 +135,7 @@ def read_serial():
     global sensor_output
     lines = []
     try:
-        lines = ser.readlines(10)
+        lines = ser.readlines(0)
     except serial.serialutil.SerialException as e:
         pass
     except BlockingIOError as eb:
