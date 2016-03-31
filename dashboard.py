@@ -126,7 +126,7 @@ def read_temperature():
 
 
     if not cancel_timer.is_set():
-        t = threading.Timer(62.0, read_temperature)
+        t = threading.Timer(10.0, read_temperature)
         t.start()
     else:
         logger.info('Timer successfully canceled')
