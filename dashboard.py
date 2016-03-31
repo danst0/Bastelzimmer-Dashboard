@@ -94,10 +94,45 @@ def index():
         return template('error')
 
 
+def read_temperature():
+    global sensor_output
+    ser.write(b'h\n')
+    lines = []
+    try:
+        lines = ser.readlines(10)
+    except serial.serialutil.SerialException as e:
+        pass
+    except BlockingIOError as eb:
+        logger.warn('Temperature: Serial blocked')
+    #logger.info('Read line')
+
+    if len(lines) > 0:
+        logger.info('Zeilenzahl {0}'.format(len(lines)))
+        logger.info(lines)
+        sanitized_line = ''
+        try:
+            sanitized_line = lines[0].decode('ascii')
+        except:
+            logger.error(lines)
+
+
+        if sanitized_line.startswith('TEMP'):
+            with sensor_lock:
+                sensor_output = sanitized_line.strip('\r\n').split(' ')
+            if len(sensor_output) >= 5:
+                logger.debug('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
+            else:
+                logger.debug('Raw ' + str(sensor_output))
+
+
+    if not cancel_timer.is_set():
+        t = threading.Timer(2.0, read_temperature)
+        t.start()
+    else:
+        logger.info('Timer successfully canceled')
 
 def read_serial():
     global sensor_output
-    ser.write(b'h\n')
     lines = []
     try:
         lines = ser.readlines(10)
