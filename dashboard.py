@@ -95,7 +95,7 @@ def index():
 
 def read_serial():
     global sensor_output
-    ser.write('h\n')
+    ser.write(b'h\n')
     lines = []
     try:
         lines = ser.readlines(1)
