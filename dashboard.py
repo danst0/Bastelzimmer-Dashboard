@@ -107,7 +107,7 @@ def read_temperature():
     #logger.info('Read line')
 
     if len(lines) > 0:
-        logger.info('Zeilenzahl {0}'.format(len(lines)))
+        #logger.info('Zeilenzahl {0}'.format(len(lines)))
         logger.info(lines)
         sanitized_line = ''
         try:
@@ -143,7 +143,7 @@ def read_serial():
     #logger.info('Read line')
 
     if len(lines) > 0:
-        logger.info('Zeilenzahl {0}'.format(len(lines)))
+        #logger.info('Zeilenzahl {0}'.format(len(lines)))
         logger.info(lines)
         sanitized_line = ''
         try:
