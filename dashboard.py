@@ -93,6 +93,8 @@ def index():
         #logger.info('No connection to cnc4')
         return template('error')
 
+
+
 def read_serial():
     global sensor_output
     ser.write(b'h\n')
@@ -106,6 +108,7 @@ def read_serial():
     #logger.info('Read line')
 
     if len(lines) > 0:
+        logger.info('Zeilenzahl {0}'.format(len(lines)))
         logger.info(lines)
         sanitized_line = ''
         try:
@@ -121,6 +124,7 @@ def read_serial():
                 logger.debug('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
             else:
                 logger.debug('Raw ' + str(sensor_output))
+
 
     if not cancel_timer.is_set():
         t = threading.Timer(1.0, read_serial)
@@ -158,6 +162,7 @@ if ser:
     except:
         pass
     read_serial()
+    read_temperature()
 
 
 
