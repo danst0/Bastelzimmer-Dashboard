@@ -95,7 +95,7 @@ def index():
 
 def read_serial():
     global sensor_output
-    #ser.write(b'h\n')
+    ser.write(b'h\n')
     lines = []
     try:
         lines = ser.readlines(1)
@@ -103,7 +103,7 @@ def read_serial():
         pass
     except BlockingIOError as eb:
         logger.warn('Serial blocked')
-    logger.info('Read line')
+    #logger.info('Read line')
 
     if len(lines) > 0:
         logger.info(lines)
