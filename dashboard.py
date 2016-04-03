@@ -107,14 +107,14 @@ def read_serial():
         logger.warn('Serial blocked')
     #logger.info('Read line')
     logger.info('We have now {0} lines'.format(len(lines)))
-    for line in lines:
-        logger.info(line)
+    for no, line in enumerate(lines):
+
         sanitized_line = ''
         try:
             sanitized_line = line.decode('ascii')
         except:
             logger.error('Error with line')
-
+        logger.info('No {0}, Text: {1}'.format(no, sanitized_line))
 
         if sanitized_line.startswith('OK'):
             with sensor_lock:
