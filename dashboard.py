@@ -100,13 +100,13 @@ def read_serial():
     lines = []
     ser.write(b'h\n')
     try:
-        lines = ser.readlines(3)
+        lines = ser.readlines(5)
     except serial.serialutil.SerialException as e:
         pass
     except BlockingIOError as eb:
         logger.warn('Serial blocked')
     #logger.info('Read line')
-    logger.info('We have now {0} lines'.format(len(lines)))
+
     for no, line in enumerate(lines):
 
         sanitized_line = ''
@@ -114,7 +114,7 @@ def read_serial():
             sanitized_line = line.decode('ascii')
         except:
             logger.error('Error with line')
-        logger.info('No {0}, Text: {1}'.format(no, sanitized_line))
+        logger.info('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
 
         if sanitized_line.startswith('OK'):
             with sensor_lock:
