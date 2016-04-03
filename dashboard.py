@@ -157,7 +157,7 @@ for port in ports:
             logger.error('Serial connection not possible')
             raise e
         try:
-            logger.info(ser.read(10000))
+            logger.info(ser.readlines(10))
         except:
             pass
 
