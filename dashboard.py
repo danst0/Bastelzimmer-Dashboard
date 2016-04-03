@@ -147,15 +147,21 @@ jeeUSB_port = ''
 for port in ports:
     if not port.endswith('0'):
         jeeUSB_port = port
-logger.info('Selecting port {0}'.format(jeeUSB_port))
+        logger.info('Selecting port {0}'.format(jeeUSB_port))
 
-#ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
-try:
-    ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
-except Exception as e:
-    ser = None
-    logger.error('Serial connection not possible')
-    raise e
+        #ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+        try:
+            ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+        except Exception as e:
+            ser = None
+            logger.error('Serial connection not possible')
+            raise e
+        try:
+            logger.info(ser.read(10000))
+        except:
+            pass
+
+
 if ser:
     logger.info('Successful connection to serial port')
     try:
@@ -173,6 +179,8 @@ cancel_timer.set()
 #print('Timer canceled')
 time.sleep(2)
 #print('Exiting')
+if ser and ser.isOpen():
+    ser.close()
 
 
 #http://cnc4:8080/state
