@@ -129,11 +129,11 @@ def read_serial():
 
         if sanitized_line.startswith('TEMP'):
             sanitized_line = sanitized_line[5:].strip()
-            logger.info('Raw ' + str(sanitized_line))
+            #logger.info('Raw ' + str(sanitized_line))
             ext_temperature = int(float(sanitized_line)*10)
-            logger.info(ext_temperature)
-            send_out_bytes = str(ext_temperature) + ', ' + my_address + 's\n'
-            logger.info('Sending out String {0}'.format(send_out_bytes))
+            #logger.info(ext_temperature)
+            send_out_bytes = str(ext_temperature) + ', ' + my_address + ' s\n'
+            logger.info('Sending out Bytes with temperature {0}'.format(send_out_bytes))
             ser.write(str.encode(send_out_bytes))
 
 
