@@ -130,9 +130,10 @@ def read_serial():
         if sanitized_line.startswith('TEMP'):
             sanitized_line = sanitized_line[5:].strip()
             logger.info('Current external temperature ' + str(sanitized_line))
-            ext_temperature = int(float(sanitized_line)*10)
+            ext_temperature = int(float(sanitized_line))
+            ext_temperature_nachkomma = int((float(sanitized_line) - int(float(sanitized_line))) * 100)
             #logger.info(ext_temperature)
-            send_out_bytes = str(ext_temperature) + ', 0'  + ' s\n'
+            send_out_bytes = str(ext_temperature) + ', ', +str(ext_temperature_nachkomma) + ', 0'  + ' s\n'
             logger.debug('Sending out Bytes with temperature {0}'.format(send_out_bytes))
             ser.write(str.encode(send_out_bytes))
 
