@@ -129,8 +129,9 @@ def read_serial():
             sanitized_line = sanitized_line[5:]
             logger.info('Raw ' + str(sanitized_line))
             ext_temperature = float(sanitized_line)
-            send_out_bytes = bytes(str(int(ext_temperature)) + ',' + address + 'a\n')
-            ser.write(send_out_bytes)
+            send_out_bytes = str(int(ext_temperature)) + ',' + address + 'a\n'
+            logger.info('Sending out String {0}'.format(send_out_bytes))
+            ser.write(bytes(send_out_bytes))
 
 
     if not cancel_timer.is_set():
