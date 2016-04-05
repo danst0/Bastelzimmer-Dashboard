@@ -144,6 +144,7 @@ logger.info('Available ports')
 ports = scan_serial_ports()
 logger.info(ports)
 jeeUSB_port = ''
+ser = None
 for port in ports:
     if not port.endswith('0'):
         jeeUSB_port = port
