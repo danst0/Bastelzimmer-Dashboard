@@ -126,9 +126,10 @@ def read_serial():
                 logger.info('Output less than 5 ' + str(sensor_output))
 
         if sanitized_line.startswith('TEMP'):
-            sanitized_line = sanitized_line[5:]
+            sanitized_line = sanitized_line[5:].strip()
             logger.info('Raw ' + str(sanitized_line))
             ext_temperature = float(sanitized_line)
+
             send_out_bytes = str(int(ext_temperature)) + ',' + address + 'a\n'
             logger.info('Sending out String {0}'.format(send_out_bytes))
             ser.write(bytes(send_out_bytes))
