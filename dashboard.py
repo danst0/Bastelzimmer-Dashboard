@@ -114,18 +114,23 @@ def read_serial():
             sanitized_line = line.decode('ascii')
         except:
             logger.error('Error with line')
-        logger.info('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
+        logger.debug('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
 
         if sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.strip('\r\n').split(' ')
             if len(sensor_output) >= 5:
-                logger.debug('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
+                logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
             else:
-                logger.debug('Raw ' + str(sensor_output))
+                logger.info('Raw ' + str(sensor_output))
 
         if sanitized_line.startswith('TEMP'):
             logger.debug('Raw ' + str(sanitized_line))
+            sanitized_line = sanitized_line[5:]
+            logger.info('Raw ' + str(sanitized_line))
+            ext_temperature = float(sanitized_line)
+            send_out_bytes = bytes(str(int(ext_temperature))+ ',' )
+            ser.write(bytes(int(ext_temperature)+bytes(',')+bytes())
 
 
     if not cancel_timer.is_set():
