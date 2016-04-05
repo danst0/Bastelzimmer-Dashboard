@@ -23,6 +23,7 @@ sensor_output = []
 
 
 url = 'http://cnc4:8080/state'
+my_address = '1'
 
 cancel_timer = threading.Event()
 
@@ -130,7 +131,7 @@ def read_serial():
             logger.info('Raw ' + str(sanitized_line))
             ext_temperature = int(float(sanitized_line))
             logger.info(ext_temperature)
-            send_out_bytes = str(ext_temperature) + ', 1 '  + 'a\n'
+            send_out_bytes = str(ext_temperature) + ', ' + my_address + 's\n'
             logger.info('Sending out String {0}'.format(send_out_bytes))
             ser.write(str.encode(send_out_bytes))
 
