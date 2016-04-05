@@ -134,7 +134,7 @@ def read_serial():
             ext_temperature_nachkomma = int((float(sanitized_line) - int(float(sanitized_line))) * 100)
             logger.info(ext_temperature)
             logger.info(ext_temperature_nachkomma)
-            send_out_bytes = str(ext_temperature) + ', ' +str(ext_temperature_nachkomma) + ', 0'  + ' s\r'
+            send_out_bytes = str(ext_temperature) + ', ' +str(ext_temperature_nachkomma) + ', 0'  + ' s\r\n'
             logger.debug('Sending out Bytes with temperature {0}'.format(send_out_bytes))
             ser.write(str.encode(send_out_bytes))
 
