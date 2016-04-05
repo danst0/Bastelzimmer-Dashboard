@@ -130,7 +130,7 @@ def read_serial():
             logger.info('Raw ' + str(sanitized_line))
             ext_temperature = float(sanitized_line)
             send_out_bytes = bytes(str(int(ext_temperature))+ ',' )
-            ser.write(bytes(int(ext_temperature)+bytes(',')+bytes())
+            ser.write(send_out_bytes)
 
 
     if not cancel_timer.is_set():
