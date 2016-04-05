@@ -100,11 +100,12 @@ def read_serial():
     global sensor_output
     lines = []
     #ser.write(b'h\n')
-    try:
-        lines = ser.readlines(5)
-    except serial.serialutil.SerialException as e:
-        pass
-    except BlockingIOError as eb:
+    if ser.isOpen():
+        try:
+            lines = ser.readlines(5)
+        except serial.serialutil.SerialException as e:
+            pass
+        except BlockingIOError as eb:
         logger.warn('Serial blocked')
     #logger.info('Read line')
 
