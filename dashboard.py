@@ -120,16 +120,16 @@ def read_serial():
             with sensor_lock:
                 sensor_output = sanitized_line.strip('\r\n').split(' ')
             if len(sensor_output) >= 5:
+                address = sensor_output[1]
                 logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
             else:
-                logger.info('Raw ' + str(sensor_output))
+                logger.info('Output less than 5 ' + str(sensor_output))
 
         if sanitized_line.startswith('TEMP'):
-            logger.debug('Raw ' + str(sanitized_line))
             sanitized_line = sanitized_line[5:]
             logger.info('Raw ' + str(sanitized_line))
             ext_temperature = float(sanitized_line)
-            send_out_bytes = bytes(str(int(ext_temperature))+ ',' )
+            send_out_bytes = bytes(str(int(ext_temperature)) + ',' + address + 'a\n')
             ser.write(send_out_bytes)
 
 
