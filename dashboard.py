@@ -116,7 +116,7 @@ def read_serial():
             sanitized_line = line.decode('ascii')
         except:
             logger.error('Error with line')
-        logger.debug('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
+        logger.info('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
 
         if sanitized_line.startswith('OK'):
             with sensor_lock:
