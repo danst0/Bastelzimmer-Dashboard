@@ -98,7 +98,7 @@ def index():
 def read_serial():
     global sensor_output
     lines = []
-    ser.write(b'h\n')
+    #ser.write(b'h\n')
     try:
         lines = ser.readlines(5)
     except serial.serialutil.SerialException as e:
