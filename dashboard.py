@@ -115,7 +115,7 @@ def read_serial():
             sanitized_line = line.decode('ascii')
         except:
             logger.error('Error with line')
-        logger.info('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
+        logger.debug('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
 
         if sanitized_line.startswith('OK'):
             with sensor_lock:
@@ -129,7 +129,7 @@ def read_serial():
         if sanitized_line.startswith('TEMP'):
             sanitized_line = sanitized_line[5:].strip()
             logger.info('Raw ' + str(sanitized_line))
-            ext_temperature = int(float(sanitized_line))
+            ext_temperature = int(float(sanitized_line)*10)
             logger.info(ext_temperature)
             send_out_bytes = str(ext_temperature) + ', ' + my_address + 's\n'
             logger.info('Sending out String {0}'.format(send_out_bytes))
