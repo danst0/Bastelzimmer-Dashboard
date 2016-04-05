@@ -106,7 +106,7 @@ def read_serial():
         except serial.serialutil.SerialException as e:
             pass
         except BlockingIOError as eb:
-        logger.warn('Serial blocked')
+            logger.warn('Serial blocked')
     #logger.info('Read line')
 
     for no, line in enumerate(lines):
