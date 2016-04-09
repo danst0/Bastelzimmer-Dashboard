@@ -154,7 +154,7 @@ def scan_serial_ports():
 
 
 if __name__ == '__main__':
-    if os.environ['BOTTLE_CHILD'] == True:
+    if 'BOTTLE_CHILD' in os.environ and os.environ['BOTTLE_CHILD'] == True:
         logger.info('Available ports')
 
         ports = scan_serial_ports()
