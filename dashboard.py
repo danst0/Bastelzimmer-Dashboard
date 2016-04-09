@@ -138,7 +138,7 @@ def read_serial():
             #logger.info(byte_2)
             send_out_bytes = 'W' + ',' + str(byte_1) + ',' +str(byte_2) + ',0'  + 's\r\n'
             logger.info('Sending out Bytes with temperature {0}'.format(send_out_bytes))
-            logger.info('Serial port {0}'.format(ser.port))
+            logger.debug('Serial port {0}'.format(ser.port))
             ser.write(str.encode(send_out_bytes))
 
 
@@ -153,51 +153,53 @@ def scan_serial_ports():
     return glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
 
 
+if __name__ == '__main__':
 
-logger.info('Available ports')
-ports = scan_serial_ports()
-logger.info(ports)
-jeeUSB_port = ''
-ser = None
-for port in ports:
-    if not port.endswith('0'):
-        jeeUSB_port = port
-        logger.info('Selecting port {0}'.format(jeeUSB_port))
+    logger.info('Available ports')
 
-        #ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+    ports = scan_serial_ports()
+    logger.info(ports)
+    jeeUSB_port = ''
+    ser = None
+    for port in ports:
+        if not port.endswith('0'):
+            jeeUSB_port = port
+            logger.info('Selecting port {0}'.format(jeeUSB_port))
+
+            #ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+            try:
+                ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+            except Exception as e:
+                ser = None
+                logger.error('Serial connection not possible')
+                raise e
+            try:
+                logger.info(ser.readlines(100))
+            except:
+                pass
+
+
+    if ser:
+        logger.info('Successful connection to serial port')
         try:
-            ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
-        except Exception as e:
-            ser = None
-            logger.error('Serial connection not possible')
-            raise e
-        try:
-            logger.info(ser.readlines(100))
+            ser.read(10000)
+            logger.info('Flushed cache')
         except:
-            pass
-
-
-if ser:
-    logger.info('Successful connection to serial port')
-    try:
-        ser.read(10000)
-        logger.info('Flushed cache')
-    except:
-        raise
-    read_serial()
-    #read_temperature()
+            raise
+        read_serial()
+        #read_temperature()
 
 
 
-run(host='0.0.0.0', port=8081, reloader=True)
-cancel_timer.set()
-#print('Timer canceled')
-time.sleep(2)
-#print('Exiting')
-if ser and ser.isOpen():
-    ser.close()
+    run(host='0.0.0.0', port=8081)
+    cancel_timer.set()
+    #print('Timer canceled')
+    time.sleep(2)
+    #print('Exiting')
+    if ser and ser.isOpen():
+        ser.close()
 
 
-#http://cnc4:8080/state
-# {"G": ["G0", "G54", "G17", "G21", "G90", "G94", "M0", "M5", "M9", "T0", "F0.", "S0."], "color": "LightYellow", "state": "Idle", "msg": "Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]", "wz": 0.0, "wy": 0.0, "wx": 0.0}
-# <iframe src="http://cnc4:8080/" width="98%" height="100%" style="border:none"></iframe>
+    #http://cnc4:8080/state
+    # {"G": ["G0", "G54", "G17", "G21", "G90", "G94", "M0", "M5", "M9", "T0", "F0.", "S0."], "color": "LightYellow", "state": "Idle", "msg": "Current: 862 [862]  Completed: 100% [1m58s Tot: 1m58s ]", "wz": 0.0, "wy": 0.0, "wx": 0.0}
+    # <iframe src="http://cnc4:8080/" width="98%" height="100%" style="border:none"></iframe>
