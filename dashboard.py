@@ -154,40 +154,40 @@ def scan_serial_ports():
 
 
 if __name__ == '__main__':
+    if os.environ['BOTTLE_CHILD'] == True:
+        logger.info('Available ports')
 
-    logger.info('Available ports')
+        ports = scan_serial_ports()
+        logger.info(ports)
+        jeeUSB_port = ''
+        ser = None
+        for port in ports:
+            if not port.endswith('0'):
+                jeeUSB_port = port
+                logger.info('Selecting port {0}'.format(jeeUSB_port))
 
-    ports = scan_serial_ports()
-    logger.info(ports)
-    jeeUSB_port = ''
-    ser = None
-    for port in ports:
-        if not port.endswith('0'):
-            jeeUSB_port = port
-            logger.info('Selecting port {0}'.format(jeeUSB_port))
+                #ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+                try:
+                    ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+                except Exception as e:
+                    ser = None
+                    logger.error('Serial connection not possible')
+                    raise e
+                try:
+                    logger.info(ser.readlines(100))
+                except:
+                    pass
 
-            #ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
+
+        if ser:
+            logger.info('Successful connection to serial port')
             try:
-                ser = serial.Serial(jeeUSB_port, 57600, timeout=1)
-            except Exception as e:
-                ser = None
-                logger.error('Serial connection not possible')
-                raise e
-            try:
-                logger.info(ser.readlines(100))
+                ser.read(10000)
+                logger.info('Flushed cache')
             except:
-                pass
-
-
-    if ser:
-        logger.info('Successful connection to serial port')
-        try:
-            ser.read(10000)
-            logger.info('Flushed cache')
-        except:
-            raise
-        read_serial()
-        #read_temperature()
+                raise
+            read_serial()
+            #read_temperature()
 
 
     # do not use reloader else serial port is executed twice (all code above!!)
