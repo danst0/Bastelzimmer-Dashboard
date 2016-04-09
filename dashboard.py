@@ -154,13 +154,14 @@ def scan_serial_ports():
 
 
 if __name__ == '__main__':
+    jeeUSB_port = ''
+    ser = None
     if 'BOTTLE_CHILD' in os.environ and os.environ['BOTTLE_CHILD'] == True:
         logger.info('Available ports')
 
         ports = scan_serial_ports()
         logger.info(ports)
-        jeeUSB_port = ''
-        ser = None
+
         for port in ports:
             if not port.endswith('0'):
                 jeeUSB_port = port
