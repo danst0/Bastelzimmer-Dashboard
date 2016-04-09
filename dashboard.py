@@ -104,9 +104,10 @@ def read_serial():
         try:
             lines = ser.readlines(5)
         except serial.serialutil.SerialException as e:
-            pass
+            raise
         except BlockingIOError as eb:
             logger.warn('Serial blocked')
+            raise
     #logger.info('Read line')
 
     for no, line in enumerate(lines):
@@ -182,7 +183,7 @@ if ser:
         ser.read(10000)
         logger.info('Flushed cache')
     except:
-        pass
+        raise
     read_serial()
     #read_temperature()
 
