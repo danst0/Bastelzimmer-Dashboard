@@ -157,7 +157,6 @@ if __name__ == '__main__':
     jeeUSB_port = ''
     ser = None
     print(os.environ)
-    print(os.environ['BOTTLE_CHILD'])
     if 'BOTTLE_CHILD' in os.environ and os.environ['BOTTLE_CHILD'] == True:
         logger.info('Available ports')
 
