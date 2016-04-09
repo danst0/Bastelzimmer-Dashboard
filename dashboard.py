@@ -156,8 +156,8 @@ def scan_serial_ports():
 if __name__ == '__main__':
     jeeUSB_port = ''
     ser = None
-    print(os.environ)
-    if 'BOTTLE_CHILD' in os.environ and os.environ['BOTTLE_CHILD'] == True:
+    #print(os.environ)
+    if 'BOTTLE_CHILD' in os.environ and os.environ['BOTTLE_CHILD'] == 'true':
         logger.info('Available ports')
 
         ports = scan_serial_ports()
