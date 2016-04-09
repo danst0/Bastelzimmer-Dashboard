@@ -137,8 +137,9 @@ def read_serial():
             #logger.info(byte_1)
             #logger.info(byte_2)
             send_out_bytes = b'99,' + bytes([byte_1]) + b',' + bytes([byte_2]) + b',0a'
-            logger.info('Real bytes {0}'.format(send_out_bytes))
-            send_out_bytes = b'2,22,35,0s'# + bytes(byte_1) + b',' + bytes(byte_2) + b',0a'
+
+            #logger.info('Real bytes {0}'.format(send_out_bytes))
+            #send_out_bytes = b'2,22,35,0s'# + bytes(byte_1) + b',' + bytes(byte_2) + b',0a'
 
             logger.info('Sending out Bytes with temperature {0}'.format(send_out_bytes))
 
