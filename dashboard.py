@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
 
     # do not use reloader else serial port is executed twice (all code above!!)
-    run(host='0.0.0.0', port=8081)
+    run(host='0.0.0.0', port=8081, reloader=True)
     cancel_timer.set()
     #print('Timer canceled')
     time.sleep(2)
