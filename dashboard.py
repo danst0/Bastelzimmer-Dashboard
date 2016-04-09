@@ -136,7 +136,7 @@ def read_serial():
             byte_2 = ext_temperature % 256
             #logger.info(byte_1)
             #logger.info(byte_2)
-            send_out_bytes = '99' + ',' + str(byte_1) + ',' +str(byte_2) + ',0'  + 'a'
+            send_out_bytes = 'x' + ',' + str(byte_1) + ',' +str(byte_2) + ',0'  + 'a'
             logger.info('Sending out Bytes with temperature {0}'.format(str.encode(send_out_bytes)))
             logger.debug('Serial port {0}'.format(ser.port))
             ser.write(str.encode(send_out_bytes))
