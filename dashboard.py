@@ -140,7 +140,7 @@ def read_serial():
             print(send_out_bytes)
             logger.info('Sending out Bytes with temperature {0}'.format(send_out_bytes))
             logger.debug('Serial port {0}'.format(ser.port))
-            ser.write(b'1,11,222,0a')
+            ser.write(send_out_bytes)
 
 
     if not cancel_timer.is_set():
