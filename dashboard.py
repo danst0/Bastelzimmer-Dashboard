@@ -156,7 +156,7 @@ def read_serial():
                 status = 1
             else:
                 status = 255
-            status = 2
+            #status = 2
             percentage = int(data['percentage'])
             send_out_bytes = ''.join(['100,', str(status),',', str(percentage), ',0a']).encode()
             logger.info('Sending out Bytes with Percentage {0}'.format(send_out_bytes))
