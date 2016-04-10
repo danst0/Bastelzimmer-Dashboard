@@ -132,12 +132,13 @@ def read_serial():
                 logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
             else:
                 logger.info('Output less than 5 ' + str(sensor_output))
-
+        percentage = 0
+        ext_temperature = 220
         if sanitized_line.startswith('TEMP'):
             sanitized_line = sanitized_line[5:].strip()
             logger.info('Current water temperature ' + str(sanitized_line))
-            ext_temperature = int(float(sanitized_line)*10)
-            ext_temperature = random.randrange(230,350)
+            #ext_temperature = int(float(sanitized_line)*10)
+            ext_temperature = ext_temperature + 5 if ext_temperature < 330 else 220
             byte_1 = int(ext_temperature / 256)
             byte_2 = ext_temperature % 256
 
@@ -158,8 +159,8 @@ def read_serial():
             else:
                 status = 255
             status = 2
-            percentage = int(data['percentage'])
-            percentage = random.randrange(0,100)
+            #percentage = int(data['percentage'])
+            percentage = percentage + 1 if percentage < 100 else 0
             send_out_bytes = ''.join(['100,', str(status),',', str(percentage), ',0a']).encode()
             logger.info('Sending out Bytes with Percentage {0}'.format(send_out_bytes))
             ser.write(send_out_bytes)
