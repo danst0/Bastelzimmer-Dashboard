@@ -139,12 +139,9 @@ def read_serial():
             ext_temperature = int(float(sanitized_line)*100)
             byte_1 = int(ext_temperature / 256)
             byte_2 = ext_temperature % 256
-            #logger.info(byte_1)
-            #logger.info(byte_2)
+
             send_out_bytes = ''.join(['99,', str(byte_1), ',', str(byte_2), ',0a']).encode()
 
-            #logger.info('Real bytes {0}'.format(send_out_bytes))
-            #send_out_bytes = b'2,22,35,0s'# + bytes(byte_1) + b',' + bytes(byte_2) + b',0a'
 
             logger.info('Sending out Bytes with temperature {0}'.format(send_out_bytes))
 
@@ -153,7 +150,11 @@ def read_serial():
 
             # After temperature send out Status
             data = poll_data()
-            send_out_bytes = ''.join(['100,', str(data['percentage']), ',0a']).encode()
+            if data['state'] == 'Idle':
+                status = 0
+            else:
+                status = 1
+            send_out_bytes = ''.join(['100,', str(status), str(int(data['percentage'])), ',0a']).encode()
             logger.info('Sending out Bytes with Percentage {0}'.format(send_out_bytes))
             ser.write(send_out_bytes)
 
