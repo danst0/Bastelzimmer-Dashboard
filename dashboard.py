@@ -152,8 +152,10 @@ def read_serial():
             data = poll_data()
             if data['state'] == 'Idle':
                 status = 0
-            else:
+            elif data['state'] == 'No connection to bCNC'
                 status = 1
+            else:
+                status = 255
             send_out_bytes = ''.join(['100,', str(status),',', str(int(data['percentage'])), ',0a']).encode()
             logger.info('Sending out Bytes with Percentage {0}'.format(send_out_bytes))
             ser.write(send_out_bytes)
