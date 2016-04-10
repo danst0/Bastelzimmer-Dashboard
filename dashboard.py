@@ -152,7 +152,7 @@ def read_serial():
             data = poll_data()
             if data['state'] == 'Idle':
                 status = 0
-            elif data['state'] == 'No connection to bCNC'
+            elif data['state'] == 'No connection to bCNC':
                 status = 1
             else:
                 status = 255
