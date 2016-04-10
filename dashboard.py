@@ -49,8 +49,8 @@ def get_time_string(seconds):
     result = str(int(seconds/60)) + 'm' + str(seconds % 60) + 's'
     return result
 
-@route('/dashboard')
-def index():
+
+def poll_data():
     global sensor_output
     data = {}
     try:
@@ -87,6 +87,11 @@ def index():
     with sensor_lock:
         data['sensors'] = sensor_output
         logger.info('Sensor data for Dashboard {0}'.format(sensor_output))
+    return data
+
+@route('/dashboard')
+def index():
+    data = poll_data()
     if data != {}:
         logger.info(data)
         return template('results', **data)
@@ -144,6 +149,12 @@ def read_serial():
             logger.info('Sending out Bytes with temperature {0}'.format(send_out_bytes))
 
             logger.debug('Serial port {0}'.format(ser.port))
+            ser.write(send_out_bytes)
+
+            # After temperature send out Status
+            data = poll_data()
+            send_out_bytes = ''.join(['100,', str(data['percentage']), ',0a']).encode()
+            logger.info('Sending out Bytes with Percentage {0}'.format(send_out_bytes))
             ser.write(send_out_bytes)
 
 
