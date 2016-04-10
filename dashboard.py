@@ -136,7 +136,7 @@ def read_serial():
         if sanitized_line.startswith('TEMP'):
             sanitized_line = sanitized_line[5:].strip()
             logger.info('Current water temperature ' + str(sanitized_line))
-            ext_temperature = int(float(sanitized_line)*100)
+            ext_temperature = int(float(sanitized_line)*10)
             byte_1 = int(ext_temperature / 256)
             byte_2 = ext_temperature % 256
 
