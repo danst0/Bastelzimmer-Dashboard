@@ -9,7 +9,7 @@ import threading
 import time
 import serial, glob
 import os
-
+import random
 
 
 logger = logging.getLogger()
@@ -137,6 +137,7 @@ def read_serial():
             sanitized_line = sanitized_line[5:].strip()
             logger.info('Current water temperature ' + str(sanitized_line))
             ext_temperature = int(float(sanitized_line)*10)
+            ext_temperature = random.randrange(230,350)
             byte_1 = int(ext_temperature / 256)
             byte_2 = ext_temperature % 256
 
@@ -156,7 +157,10 @@ def read_serial():
                 status = 1
             else:
                 status = 255
-            send_out_bytes = ''.join(['100,', str(status),',', str(int(data['percentage'])), ',0a']).encode()
+            status = 2
+            percentage = int(data['percentage'])
+            percentage = random.randrange(0,100)
+            send_out_bytes = ''.join(['100,', str(status),',', str(percentage), ',0a']).encode()
             logger.info('Sending out Bytes with Percentage {0}'.format(send_out_bytes))
             ser.write(send_out_bytes)
 
