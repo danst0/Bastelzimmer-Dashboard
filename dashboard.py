@@ -155,6 +155,7 @@ def read_serial():
             elif data['state'] == 'No connection to bCNC':
                 status = 1
             else:
+                logger.info('Current status not found: {0}'.format(data['state']))
                 status = 255
             #status = 2
             percentage = 0
