@@ -124,7 +124,18 @@ def read_serial():
             logger.error('Error with line')
         logger.info('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
 
-        if sanitized_line.startswith('OK'):
+        if sanitized_line.startswith('OK 5 101'):
+            logger.info('Received from Bastelzimmer Display: {0}'.format(sanitized_line))
+            #with sensor_lock:
+            #    sensor_output = sanitized_line.strip('\r\n').split(' ')
+            #if len(sensor_output) >= 5:
+            #    address = sensor_output[1]
+            #    logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
+            #else:
+            #    logger.info('Output less than 5 ' + str(sensor_output))
+
+
+        elif sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.strip('\r\n').split(' ')
             if len(sensor_output) >= 5:
