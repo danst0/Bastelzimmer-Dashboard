@@ -136,7 +136,7 @@ def read_serial():
         if sanitized_line.startswith('TEMP'):
             sanitized_line = sanitized_line[5:].strip()
             logger.info('Current water temperature ' + str(sanitized_line))
-            ext_temperature = int(float(sanitized_line)*10)
+            ext_temperature = int(float(sanitized_line)*10 + 5)
             byte_1 = int(ext_temperature / 256)
             byte_2 = ext_temperature % 256
 
@@ -157,7 +157,9 @@ def read_serial():
             else:
                 status = 255
             #status = 2
-            percentage = int(data['percentage'])
+            percentage = 0
+            if 'percentage' in data.keys():
+                percentage = int(data['percentage'])
             send_out_bytes = ''.join(['100,', str(status),',', str(percentage), ',0a']).encode()
             logger.info('Sending out Bytes with Percentage {0}'.format(send_out_bytes))
             ser.write(send_out_bytes)
