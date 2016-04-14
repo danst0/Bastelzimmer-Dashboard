@@ -170,7 +170,7 @@ def read_serial():
             else:
                 logger.info('Current status not found: {0}'.format(data['state']))
                 status = 255
-            #status = 2
+            status = random.randrange(0,3)
             percentage = 0
             if 'percentage' in data.keys():
                 percentage = int(data['percentage'])
