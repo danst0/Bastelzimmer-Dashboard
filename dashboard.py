@@ -217,7 +217,7 @@ if __name__ == '__main__':
     #print(os.environ)
     if 'BOTTLE_CHILD' in os.environ and os.environ['BOTTLE_CHILD'] == 'true':
         arguments = docopt(__doc__, version='Dashboard 1.2')
-        #print(arguments)
+        print(arguments)
         if arguments['--verbose']:
             logger.setLevel(logging.INFO)
             logger.info('Log level INFO')
