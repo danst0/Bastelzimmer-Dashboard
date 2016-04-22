@@ -59,8 +59,12 @@ def send_static(filename):
     return static_file(filename, root='./static/')
 
 def get_seconds(time_string):
-    result = re.match('(?P<minutes>[0-9]*)m(?P<seconds>[0-9]*)s', time_string)
-    seconds = int(result.group('minutes')) * 60 + int(result.group('seconds'))
+    result = re.match('((?P<minutes>[0-9]*)m)?(?P<seconds>[0-9]*)s', time_string)
+    try:
+        mins = int(result.group('minutes'))
+    except:
+        mins = 0
+    seconds = mins * 60 + int(result.group('seconds'))
     return seconds
 
 def get_time_string(seconds):
