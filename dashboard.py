@@ -90,12 +90,13 @@ def poll_data():
         if data['msg'] != '':
             split_result = re.match('Current:\s(?P<current_line>[0-9]*)\s\[(?P<total_lines>[0-9]*)\].*\s(?P<percentage>[0-9]*)%\s\[(?P<current_minutes>[0-9ms]*)\sTot:\s(?P<total_minutes>[0-9ms]*)\s\]',
                  data['msg'])
-            data['current_line'] = split_result.group('current_line')
-            data['total_lines'] = split_result.group('total_lines')
-            data['percentage'] = split_result.group('percentage')
-            data['current_minutes'] = split_result.group('current_minutes')
-            data['total_minutes'] = split_result.group('total_minutes')
-            data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
+            if split_result:
+                data['current_line'] = split_result.group('current_line')
+                data['total_lines'] = split_result.group('total_lines')
+                data['percentage'] = split_result.group('percentage')
+                data['current_minutes'] = split_result.group('current_minutes')
+                data['total_minutes'] = split_result.group('total_minutes')
+                data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
 
         locked_strings = ['Reset to continue', "'$H'|'$X' to unlock"]
 
@@ -217,7 +218,7 @@ if __name__ == '__main__':
     #print(os.environ)
     if 'BOTTLE_CHILD' in os.environ and os.environ['BOTTLE_CHILD'] == 'true':
         arguments = docopt(__doc__, version='Dashboard 1.2')
-        print(arguments)
+        #print(arguments)
         if arguments['--verbose']:
             logger.setLevel(logging.INFO)
             logger.info('Log level INFO')
