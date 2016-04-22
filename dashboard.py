@@ -35,7 +35,7 @@ handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARN)
 sensor_lock = threading.Lock()
 sensor_output = []
 
@@ -211,12 +211,17 @@ def scan_serial_ports():
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='Dashboard 1.2')
-    print(arguments)
+
     jeeUSB_port = ''
     ser = None
     #print(os.environ)
     if 'BOTTLE_CHILD' in os.environ and os.environ['BOTTLE_CHILD'] == 'true':
+        arguments = docopt(__doc__, version='Dashboard 1.2')
+        print(arguments)
+        if arguments['--verbose']:
+            logger.setLevel(logging.INFO)
+        if arguments['--debug']:
+            logger.setLevel(logging.DEBUG)
         logger.info('Available ports')
 
         ports = scan_serial_ports()
