@@ -4,6 +4,8 @@
 
 Usage:
   dashboard.py
+  dashboard.py (-v | --verbose)
+  dashboard.py (-d | --debug)
   dashboard.py (-h | --help)
   dashboard.py --version
 
