@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
 
+"""Dashboard
+
+Usage:
+  dashboard.py (-h | --help)
+  dashboard.py --version
+
+Options:
+  -v --verbose  Verbose log level
+  -d --debug    Debug log level
+  -h --help     Show this screen.
+  --version     Show version.
+
+"""
+
 from bottle import route, run, template, static_file, redirect
 import json, requests
 import re
@@ -10,6 +24,7 @@ import time
 import serial, glob
 import os
 import random
+from docopt import docopt
 
 
 logger = logging.getLogger()
@@ -191,6 +206,8 @@ def scan_serial_ports():
 
 
 if __name__ == '__main__':
+    arguments = docopt(__doc__, version='Dashboard 1.2')
+    print(arguments)
     jeeUSB_port = ''
     ser = None
     #print(os.environ)
