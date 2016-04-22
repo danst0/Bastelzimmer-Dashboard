@@ -3,6 +3,7 @@
 """Dashboard
 
 Usage:
+  dashboard.py
   dashboard.py (-h | --help)
   dashboard.py --version
 
