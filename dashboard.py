@@ -274,7 +274,7 @@ if __name__ == '__main__':
                     logger.error('Serial connection not possible')
                     raise e
                 try:
-                    logger.info(ser.readlines(100))
+                    ser.readlines(100)
                 except:
                     pass
 
