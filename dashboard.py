@@ -241,7 +241,7 @@ if __name__ == '__main__':
         logger.info(ports)
 
         for port in ports:
-            if not port.endswith('0'):
+            if not port.endswith('1') and port.find('USB') != -1:
                 jeeUSB_port = port
                 logger.info('Selecting port {0}'.format(jeeUSB_port))
 
