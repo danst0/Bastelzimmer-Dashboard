@@ -131,6 +131,7 @@ def index():
 
 def read_serial():
     global sensor_output
+    global website_output
     lines = []
     #ser.write(b'h\n')
     if ser.isOpen():
