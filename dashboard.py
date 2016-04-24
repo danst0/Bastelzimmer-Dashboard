@@ -37,7 +37,8 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.WARN)
 sensor_lock = threading.Lock()
-sensor_output = {}
+sensor_output = []
+website_output = []
 
 
 url = 'http://cnc4:8080/state'
@@ -74,6 +75,7 @@ def get_time_string(seconds):
 
 def poll_data():
     global sensor_output
+    global website_output
     data = {}
     try:
         resp = requests.get(url=url)
@@ -111,8 +113,8 @@ def poll_data():
 
             data['locked'] = True
     with sensor_lock:
-        data['sensors'] = sensor_output
-        logger.info('Sensor data for Dashboard {0}'.format(sensor_output))
+        data['sensors'] = website_output
+        logger.info('Sensor data for Dashboard {0}'.format(website_output))
     return data
 
 @route('/dashboard')
@@ -179,7 +181,7 @@ def read_serial():
                     temp = temp - 1024
                 logger.info('Moved {0}, light {1}, humidity {2}, temperature {3}'.format(moved, light, humi, temp))
                 with sensor_lock:
-                    sensor_output = ['OK', '3', light, humi, temp/10]
+                    website_output = ['OK', '3', light, humi, temp/10]
                 #//byte moved :1;  // motion detector: 0..1
                 #//byte humi  :7;  // humidity: 0..100
                 #//int temp   :10; // temperature: -500..+500 (tenths)
