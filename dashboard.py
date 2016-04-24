@@ -183,7 +183,7 @@ def read_serial():
                     temp = temp - 1024
                 logger.info('Moved {0}, light {1}, humidity {2}, temperature {3}'.format(moved, light, humi, temp))
                 with web_data_lock:
-                    website_output = ['OK', '3', str(light), str(humi), str(temp/10)]
+                    website_output = ['OK', str(moved), str(light), str(humi), str(temp/10), 'fill']
                 #//byte moved :1;  // motion detector: 0..1
                 #//byte humi  :7;  // humidity: 0..100
                 #//int temp   :10; // temperature: -500..+500 (tenths)
