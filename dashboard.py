@@ -170,7 +170,7 @@ def read_serial():
                 light = sensor_output[2]
                 logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}, 5: {3:b}'.format(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4]), int(sensor_output[5])))
                 # get moved bit
-                moved = int(sensor_output[3]) & 8
+                moved = int(sensor_output[3]) >> 7
                 # unset moved bit --> result is humidity
                 humi = int(sensor_output[3]) & ~0b10000000
                 temp = (int(sensor_output[4]) << 2) | int(sensor_output[4])
