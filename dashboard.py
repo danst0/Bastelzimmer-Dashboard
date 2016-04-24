@@ -195,9 +195,11 @@ def read_serial():
                 status = 3
             elif data['state'] == 'Hold':
                 status = 4
+
             elif data['state'].startswith('error'):
                 status = 5
-
+            elif data['state'] == 'Alarm':
+                status = 6
             else:
                 logger.info('Current status not found: {0}'.format(data['state']))
                 status = 255
