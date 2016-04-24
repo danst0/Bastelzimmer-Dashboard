@@ -165,7 +165,7 @@ def read_serial():
             with sensor_lock:
                 sensor_output = sanitized_line.strip('\r\n').split(' ')
                 logger.debug('Unsanitized sensor output: {0}'.format(sensor_output))
-            if len(sensor_output) == 5:
+            if len(sensor_output) == 6:
                 address = sensor_output[1]
                 logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}'.format(sensor_output[2], sensor_output[3], sensor_output[4]))
                 moved = sensor_output[2] & 8
