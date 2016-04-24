@@ -167,12 +167,14 @@ def read_serial():
                 logger.debug('Unsanitized sensor output: {0}'.format(sensor_output))
             if len(sensor_output) == 6:
                 address = sensor_output[1]
+                light = sensor_output[2]
                 logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}'.format(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4])))
-                pack = struct.pack(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4]))
-                logger.debug('Pack {0}'.format(pack))
-                moved = int(sensor_output[2]) & 8
-
-                logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
+                # get moved bit
+                moved = int(sensor_output[3]) & 8
+                # unset moved bit --> result is humidity
+                humi = int(sensor_output[3]) & ~0b10000000
+                temp = 0xff
+                logger.info('Moved {0}, light {1}, humidity {2}, temperature {4}'.format(light, moved, humi, temp))
 
                 #//byte moved :1;  // motion detector: 0..1
                 #//byte humi  :7;  // humidity: 0..100
