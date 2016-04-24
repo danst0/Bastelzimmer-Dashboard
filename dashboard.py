@@ -168,13 +168,13 @@ def read_serial():
             if len(sensor_output) == 6:
                 address = sensor_output[1]
                 light = sensor_output[2]
-                logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}'.format(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4])))
+                logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}, 5: {3:b}'.format(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4]), int(sensor_output[5])))
                 # get moved bit
                 moved = int(sensor_output[3]) & 8
                 # unset moved bit --> result is humidity
                 humi = int(sensor_output[3]) & ~0b10000000
-                temp = 0xff
-                logger.info('Moved {0}, light {1}, humidity {2}, temperature {3}'.format(light, moved, humi, temp))
+                temp = (int(sensor_output[4]) << 2) & int(sensor_output[4])
+                logger.info('Moved {0}, light {1}, humidity {2}, temperature {3}'.format(moved, light, humi, temp))
 
                 #//byte moved :1;  // motion detector: 0..1
                 #//byte humi  :7;  // humidity: 0..100
