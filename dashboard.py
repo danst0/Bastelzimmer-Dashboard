@@ -167,7 +167,7 @@ def read_serial():
                 logger.debug('Unsanitized sensor output: {0}'.format(sensor_output))
             if len(sensor_output) == 6:
                 address = sensor_output[1]
-                logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}'.format(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4]))
+                logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}'.format(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4])))
                 moved = sensor_output[2] & 8
 
                 logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
