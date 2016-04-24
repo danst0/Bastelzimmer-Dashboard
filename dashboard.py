@@ -102,7 +102,8 @@ def poll_data():
                 data['current_minutes'] = split_result.group('current_minutes')
                 data['total_minutes'] = split_result.group('total_minutes')
                 data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
-
+            else:
+                logger.debug('Could not match msg: {0}'.format(data[msg]))
         locked_strings = ['Reset to continue', "'$H'|'$X' to unlock"]
 
         if ' '.join(data['G']) in locked_strings:
@@ -162,7 +163,7 @@ def read_serial():
         elif sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.strip('\r\n').split(' ')
-                logger.debug(sensor_output)
+                logger.debug('Unsanitized sensor output: {0}'.format(sensor_output))
             if len(sensor_output) == 5:
                 address = sensor_output[1]
                 logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
