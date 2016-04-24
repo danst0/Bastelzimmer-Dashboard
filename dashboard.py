@@ -103,7 +103,8 @@ def poll_data():
                 data['total_minutes'] = split_result.group('total_minutes')
                 data['ETA'] = get_time_string(get_seconds(data['total_minutes']) - get_seconds(data['current_minutes']))
             else:
-                logger.debug('Could not match msg: {0}'.format(data[msg]))
+                logger.debug('Could not match msg: {0}'.format(data['msg']))
+
         locked_strings = ['Reset to continue', "'$H'|'$X' to unlock"]
 
         if ' '.join(data['G']) in locked_strings:
