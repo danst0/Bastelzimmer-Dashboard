@@ -38,6 +38,7 @@ logger.addHandler(handler)
 logger.setLevel(logging.WARN)
 sensor_lock = threading.Lock()
 sensor_output = []
+web_data_lock = threading.Lock()
 website_output = []
 
 
@@ -112,9 +113,9 @@ def poll_data():
         if ' '.join(data['G']) in locked_strings:
 
             data['locked'] = True
-    with sensor_lock:
+    with web_data_lock:
         data['sensors'] = website_output
-        logger.info('Sensor data for Dashboard {0}'.format(website_output))
+    logger.info('Sensor data for Dashboard {0}'.format(website_output))
     return data
 
 @route('/dashboard')
@@ -181,8 +182,8 @@ def read_serial():
                 if temp > 500:
                     temp = temp - 1024
                 logger.info('Moved {0}, light {1}, humidity {2}, temperature {3}'.format(moved, light, humi, temp))
-                with sensor_lock:
-                    website_output = ['OK', '3', light, humi, temp/10]
+                with web_data_lock:
+                    website_output = ['OK', '3', str(light), str(humi), str(temp/10)]
                 #//byte moved :1;  // motion detector: 0..1
                 #//byte humi  :7;  // humidity: 0..100
                 #//int temp   :10; // temperature: -500..+500 (tenths)
