@@ -167,7 +167,16 @@ def read_serial():
                 logger.debug('Unsanitized sensor output: {0}'.format(sensor_output))
             if len(sensor_output) == 5:
                 address = sensor_output[1]
+                logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}'.format(sensor_output[2], sensor_output[3], sensor_output[4]))
+                moved = sensor_output[2] & 8
+
                 logger.info('Result {0}, moved {1}, light {2}, humidity {3}, temperature {4}'.format(*sensor_output))
+
+                #//byte moved :1;  // motion detector: 0..1
+                #//byte humi  :7;  // humidity: 0..100
+                #//int temp   :10; // temperature: -500..+500 (tenths)
+                #//byte lobat :1;  // supply voltage dropped under 3.1V: 0..1
+
             else:
                 logger.info('Output other than 5 ' + str(sensor_output))
 
@@ -183,7 +192,7 @@ def read_serial():
 
             logger.info('Sending out Bytes with temperature {0}'.format(send_out_bytes))
 
-            logger.debug('Serial port {0}'.format(ser.port))
+            #logger.debug('Serial port {0}'.format(ser.port))
             ser.write(send_out_bytes)
 
             # After temperature send out Status
