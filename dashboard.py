@@ -93,7 +93,7 @@ def poll_data():
         logger.debug(data)
         data['locked'] = False
         if data['msg'] != '':
-            split_result = re.match('(Current:\s)?(?P<current_line>[0-9]*)\s\[(?P<total_lines>[0-9]*)\].*\s(?P<percentage>[0-9]*)%\s\[(?P<current_minutes>[0-9ms]*)\sTot:\s(?P<total_minutes>[0-9ms]*)\sRem:\s(?P<rem_minutes>[0-9ms]*)\]',
+            split_result = re.match('Current:\s(?P<current_line>[0-9]*)\s\[(?P<total_lines>[0-9]*)\].*\s(?P<percentage>[0-9]*)%\s\[(?P<current_minutes>[0-9ms]*)\sTot:\s(?P<total_minutes>[0-9ms]*)\s(Rem:\s(?P<rem_minutes>[0-9ms]*))?\]',
                  data['msg'])
             if split_result:
                 data['current_line'] = split_result.group('current_line')
