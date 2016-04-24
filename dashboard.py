@@ -133,7 +133,7 @@ def read_serial():
     #ser.write(b'h\n')
     if ser.isOpen():
         try:
-            lines = ser.readlines(5)
+            lines = ser.readlines(1)
         except serial.serialutil.SerialException as e:
             raise
         except BlockingIOError as eb:
@@ -171,9 +171,9 @@ def read_serial():
                 logger.debug('Binary 2: {0:b}, 3: {1:b}, 4: {2:b}, 5: {3:b}'.format(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4]), int(sensor_output[5])))
                 logger.debug('Binary 2: {0}, 3: {1}, 4: {2}, 5: {3}'.format(int(sensor_output[2]), int(sensor_output[3]), int(sensor_output[4]), int(sensor_output[5])))
                 # get moved bit
-                moved = (int(sensor_output[3]) & 0b10000000) != 0
+                moved = (int(sensor_output[3]) & 0b00000001) != 0
                 # unset moved bit --> result is humidity
-                humi = int(sensor_output[3]) & ~0b10000000
+                humi = int(sensor_output[3]) >> 1
                 temp = (int(sensor_output[4]) << 2) | int(sensor_output[5])
                 logger.info('Moved {0}, light {1}, humidity {2}, temperature {3}'.format(moved, light, humi, temp))
 
@@ -230,7 +230,7 @@ def read_serial():
 
 
     if not cancel_timer.is_set():
-        t = threading.Timer(10.0, read_serial)
+        t = threading.Timer(2.0, read_serial)
         t.start()
     else:
         logger.info('Timer successfully canceled')
