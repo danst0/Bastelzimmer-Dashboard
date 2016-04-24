@@ -37,7 +37,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.WARN)
 sensor_lock = threading.Lock()
-sensor_output = []
+sensor_output = {}
 
 
 url = 'http://cnc4:8080/state'
@@ -119,7 +119,7 @@ def poll_data():
 def index():
     data = poll_data()
     if data != {}:
-        logger.info(data)
+        logger.debug(data)
         return template('results', **data)
     else:
         #logger.info('No connection to cnc4')
@@ -148,7 +148,7 @@ def read_serial():
             sanitized_line = line.decode('ascii')
         except:
             logger.error('Error with line')
-        logger.info('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
+        logger.debug('Line number: {0}, Text: {1}'.format(no+1, sanitized_line))
 
         if sanitized_line.startswith('OK 5'):
             logger.info('Received from Bastelzimmer Display: {0}'.format(sanitized_line))
@@ -164,7 +164,7 @@ def read_serial():
         elif sanitized_line.startswith('OK'):
             with sensor_lock:
                 sensor_output = sanitized_line.strip('\r\n').split(' ')
-                logger.debug('Unsanitized sensor output: {0}'.format(sensor_output))
+            logger.debug('Unsanitized sensor output: {0}'.format(sensor_output))
             if len(sensor_output) == 6:
                 address = sensor_output[1]
                 light = sensor_output[2]
@@ -178,7 +178,8 @@ def read_serial():
                 if temp > 500:
                     temp = temp - 1024
                 logger.info('Moved {0}, light {1}, humidity {2}, temperature {3}'.format(moved, light, humi, temp))
-
+                with sensor_lock:
+                    sensor_output = ['OK', '3', light, humi, temp/10]
                 #//byte moved :1;  // motion detector: 0..1
                 #//byte humi  :7;  // humidity: 0..100
                 #//int temp   :10; // temperature: -500..+500 (tenths)
