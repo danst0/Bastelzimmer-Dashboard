@@ -174,7 +174,7 @@ def read_serial():
                 moved = (int(sensor_output[3]) & 0b00000001) != 0
                 # unset moved bit --> result is humidity
                 humi = int(sensor_output[3]) >> 1
-                temp = (int(sensor_output[4]) << 2) | int(sensor_output[5])
+                temp = int(sensor_output[4]) | (int(sensor_output[5]) << 8)
                 logger.info('Moved {0}, light {1}, humidity {2}, temperature {3}'.format(moved, light, humi, temp))
 
                 #//byte moved :1;  // motion detector: 0..1
