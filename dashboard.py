@@ -244,19 +244,39 @@ def read_serial():
     else:
         logger.info('Timer successfully canceled')
 
+
+
+
+def extra_info(device):
+    extra_items = []
+    if 'ID_VENDOR' in device:
+        extra_items.append("vendor '%s'" % device['ID_VENDOR'])
+    if 'ID_SERIAL_SHORT' in device:
+        extra_items.append("serial '%s'" % device['ID_SERIAL_SHORT'])
+    if extra_items:
+        return ' with ' + ' '.join(extra_items)
+    return ''
+    
+# Partial     Source: https://github.com/dhylands/usb-ser-mon/blob/master/find_port.py
 def scan_serial_ports():
     # scan for available ports. return a list of device names.
-    ports = glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
-        
+#    ports = glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
+    context = pyudev.Context()
+    #A104OA2C
     new_ports = []
-    for tty in ports:
-        print(pyudev.Devices.from_path(context, tty))
-        try:
-            port = serial.Serial(port=tty)
-            new_ports.append(tty)
-        except serial.SerialException as ex:
-            print('Port {0} is unavailable: {1}'.format(tty, ex))
-    print('old ports', ports)
+    for device in context.list_devices(subsystem='tty'):
+        if 'ID_VENDOR' in device:
+            new_ports.append((device.device_node, device['ID_VENDOR']))
+            #print('USB Serial Device %s:%s%s found @%s (Driver: %s)'.format(
+            #          device['ID_VENDOR_ID'], device['ID_MODEL_ID'],
+            #          extra_info(device), device.device_node))
+#    for tty in ports:
+#        try:
+#            port = serial.Serial(port=tty)
+#            new_ports.append(tty)
+#        except serial.SerialException as ex:
+#            print('Port {0} is unavailable: {1}'.format(tty, ex))
+    #print('old ports', ports)
     print('new ports', new_ports)
     return new_ports
 
@@ -279,8 +299,8 @@ if __name__ == '__main__':
         ports = scan_serial_ports()
         logger.info(ports)
 
-        for port in ports:
-            if not port.endswith('0') and port.find('USB') != -1:
+        for vendor, port in ports:
+            if vendor == '1a86':
                 jeeUSB_port = port
                 logger.info('Selecting port {0}'.format(jeeUSB_port))
 
