@@ -242,9 +242,37 @@ def read_serial():
     else:
         logger.info('Timer successfully canceled')
 
+def available_ttys():
+    for tty in serial.tools.list_ports.comports():
+        try:
+            port = serial.Serial(port=tty[0])
+            if port.isOpen():
+                try:
+                    fcntl.flock(port.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except IOError:
+                    print 'Port {0} is busy'.format(tty)
+                else:
+                    yield port
+        except serial.SerialException as ex:
+            print 'Port {0} is unavailable: {1}'.format(tty, ex)
+
 def scan_serial_ports():
     # scan for available ports. return a list of device names.
-    return glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
+    ports = glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
+    new_ports = []
+    for tty in ports:
+        try:
+            port = serial.Serial(port=tty)
+            if port.isOpen():
+                try:
+                  fcntl.flock(port.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except IOError:
+                    print 'Port {0} is busy'.format(tty)
+                else:
+                    new_ports.append(tty)
+        except serial.SerialException as ex:
+            print 'Port {0} is unavailable: {1}'.format(tty, ex)
+    return new_ports
 
 
 if __name__ == '__main__':
@@ -262,7 +290,9 @@ if __name__ == '__main__':
             logger.setLevel(logging.DEBUG)
             logger.debug('Log level DEBUG')
         logger.info('Available ports')
-
+        logger.info('Testlauf')
+        available_ttys()
+        logger.info('Richtiger lauf')
         ports = scan_serial_ports()
         logger.info(ports)
 
